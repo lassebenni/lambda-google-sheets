@@ -16,7 +16,7 @@ class SNSGoogleSheetsLambdaStack(core.Stack):
         super().__init__(scope, id, **kwargs)
 
         func = self.create_google_sheets_lambda()
-        topic = self.create_google_sheets_topic()
+        topic = self.create_sns_google_sheets_topic()
         topic.add_subscription(_subscriptions.LambdaSubscription(func))
 
     def build_or_reuse_container_image(self, image_name: str):
