@@ -1,3 +1,4 @@
 aws-cdk.core
 aws-cdk.aws-lambda
 aws_cdk.aws_sns
+aws-cdk.aws_sns_subscriptions
