@@ -5,5 +5,5 @@ from aws_cdk import (
 
 app = core.App()
 env = {'region': 'eu-west-1'}
-SNSGoogleSheetsLambdaStack(app, "SNSGoogleSheetsLambdaStack", env)
+SNSGoogleSheetsLambdaStack(app, "SNSGoogleSheetsLambdaStack", env=env)
 app.synth()
