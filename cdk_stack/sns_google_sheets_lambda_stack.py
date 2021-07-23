@@ -96,7 +96,6 @@ class SNSGoogleSheetsLambdaStack(core.Stack):
         return _sns.Topic(
             self,
             id='sns_google_sheets_topic',
-            name='sns_google_sheets_topic',
             topic_name='sns_google_sheets_topic',
             display_name='sns_google_sheets_topic',
         )
