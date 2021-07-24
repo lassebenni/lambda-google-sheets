@@ -5,18 +5,19 @@ from sheets.sheet import GoogleSheet
 
 session = boto3.Session(region_name="eu-west-1")
 
+
 def handler(event, context):
     messages = extract_messages(event)
 
-    s3_path = messages['s3_path']
+    bucket = messages['bucket']
     format = messages['format']
+    key = messages['key']
+    sheet_name = messages['sheet_name']
+    worksheet = messages['worksheet']
 
-    df = read_df_from_s3(s3_path, format)
+    df = read_df_from_s3(f"s3://{bucket}/{key}", format)
 
     if len(df) > 0:
-        sheet_name = messages['sheet_name']
-        worksheet = messages['worksheet']
-
         sheet = GoogleSheet(sheet_name)
         sheet.update_sheet(df, worksheet)
 
