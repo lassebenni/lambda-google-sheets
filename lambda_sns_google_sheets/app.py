@@ -15,7 +15,7 @@ def handler(event, context):
     sheet_name = messages['sheet_name']
     worksheet = messages['worksheet']
 
-    df = read_df_from_s3(f"s3://{bucket}/{key}", format)
+    df = read_df_from_s3(bucket, key, format)
 
     if len(df) > 0:
         sheet = GoogleSheet(sheet_name)

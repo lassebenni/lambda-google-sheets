@@ -1,6 +1,10 @@
+from io import BytesIO
 import json
 
 import pandas as pd
+import boto3
+
+s3 = boto3.client('s3')
 
 
 def extract_messages(event: dict):
@@ -10,14 +14,13 @@ def extract_messages(event: dict):
         pass
 
 
-def read_df_from_s3(path: str, format: str) -> pd.DataFrame:
-    df = None
+def read_df_from_s3(bucket: str, key: str, format: str) -> pd.DataFrame:
+    retr = s3.get_object(Bucket=bucket, Key=key)
 
     if format == 'json':
-        df = pd.read_json(path)
+        return pd.read_json(BytesIO(retr['Body'].read()))
     elif format == 'csv':
+        return pd.read_csv(BytesIO(retr['Body'].read()))
         df = pd.read_csv(path)
     elif format == 'feather':
-        df = pd.read_feather(path)
-
-    return df
+        return pd.read_feather(BytesIO(retr['Body'].read()))
