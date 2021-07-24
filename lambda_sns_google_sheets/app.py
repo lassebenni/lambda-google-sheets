@@ -1,6 +1,5 @@
-import json
+from lambda_sns_google_sheets.lib.utils import extract_messages, read_df_from_s3
 
-import pandas as pd
 import boto3
 from sheets.sheet import GoogleSheet
 
@@ -9,17 +8,18 @@ session = boto3.Session(region_name="eu-west-1")
 
 def handler(event, context):
     messages = extract_messages(event)
-    print(messages)
 
     s3_path = messages['s3_path']
-    sheet_name = messages['sheet_name']
-    worksheet = messages['worksheet']
+    format = messages['format']
 
-    df = pd.DataFrame(columns=[], rows=[])
+    df = read_df_from_s3(s3_path, format)
 
     if len(df) > 0:
+        sheet_name = messages['sheet_name']
+        worksheet = messages['worksheet']
+
         sheet = GoogleSheet(sheet_name)
-        sheet.update_sheet(df, 's3')
+        sheet.update_sheet(df, worksheet)
 
         message = f"Succesfully stored dataframe in sheet {sheet_name}"
 
@@ -30,10 +30,3 @@ def handler(event, context):
         "statusCode": 200,
         "body": message
     }
-
-
-def extract_messages(event: dict):
-    try:
-        return json.loads(event['Records'][0]['Sns']['Message'])
-    except KeyError:
-        pass
