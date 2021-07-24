@@ -19,6 +19,18 @@ class SNSGoogleSheetsLambdaStack(core.Stack):
         topic = self.create_sns_google_sheets_topic()
         topic.add_subscription(_subscriptions.LambdaSubscription(func))
 
+        s3_policy = _iam.PolicyStatement(
+            effect=_iam.Effect.ALLOW,
+            actions=[
+                "s3:Get*",
+                "s3:List*"
+            ],
+            resources=[
+                "*"
+            ],
+        )
+        func.role.add_to_policy(s3_policy)
+
     def build_or_reuse_container_image(self, image_name: str):
         ##
         # If use_pre_existing_image is True
