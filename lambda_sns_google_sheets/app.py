@@ -1,10 +1,9 @@
-from lambda_sns_google_sheets.lib.utils import extract_messages, read_df_from_s3
+from lib.utils import extract_messages, read_df_from_s3
 
 import boto3
 from sheets.sheet import GoogleSheet
 
 session = boto3.Session(region_name="eu-west-1")
-
 
 def handler(event, context):
     messages = extract_messages(event)
