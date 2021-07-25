@@ -87,7 +87,7 @@ class SNSGoogleSheetsLambdaStack(core.Stack):
             handler=_lambda.Handler.FROM_IMAGE,
             runtime=_lambda.Runtime.FROM_IMAGE,
             function_name=image_name,
-            memory_size=128,
+            memory_size=1024,
             reserved_concurrent_executions=10,
             timeout=core.Duration.minutes(15),
             environment=env
