@@ -27,3 +27,12 @@ def read_df_from_s3(bucket: str, key: str, format: str) -> pd.DataFrame:
         df = pd.read_csv(path)
     elif format == 'feather':
         return pd.read_feather(body_as_bytes)
+
+def add_cols_to_front(df: pd.DataFrame, cols: list) -> pd.DataFrame:
+    cols.reverse()
+    for col in cols:
+        df.rename({col: f'{col}_tmp'}, axis=1, inplace=True)
+        df.insert(0, col, df[f'{col}_tmp'])
+        df = df.drop(f'{col}_tmp', axis=1)
+
+    return df
