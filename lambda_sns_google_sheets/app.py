@@ -15,6 +15,7 @@ def handler(event, context):
     sheet_name = messages['sheet_name']
     worksheet = messages['worksheet']
     ordered_cols = messages['ordered_cols']
+    replace_sheet = messages['replace_sheet']
 
     df = read_df_from_s3(bucket, key, format)
 
@@ -22,7 +23,7 @@ def handler(event, context):
 
         df = add_cols_to_front(df, ordered_cols)
         sheet = GoogleSheet(sheet_name)
-        sheet.update_sheet(df, worksheet)
+        sheet.update_sheet(df, worksheet, replace_sheet)
 
         message = f"Succesfully stored dataframe in sheet {sheet_name}"
 

@@ -36,6 +36,6 @@ class GoogleSheet():
     def get_credentials(self):
         return ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
-    def update_sheet(self, df, worksheet_name):
+    def update_sheet(self, df, worksheet_name, replace_sheet: bool = False):
         self.spread.df_to_sheet(df, index=False, sheet=worksheet_name,
-                                start='A1', replace=False)
+                                start='A1', replace=replace_sheet)
